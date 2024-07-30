@@ -13,6 +13,15 @@ app.use(express.static("public"));
 app.use("/upload", upload_router);
 app.use("/fetch", fetch_router);
 
+app.get("/fetch-random", (req, res) => {
+  res.sendFile(path.join(__dirname, "/views/fetch-random.html"));
+});
+app.get("/fetch-multiple-random", (req, res) => {
+  res.sendFile(path.join(__dirname, "/views/fetch-multiple-random.html"));
+});
+
+
+
 // Serve index.html
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "/views/index.html"));
