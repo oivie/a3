@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path");
 const multer = require("multer");
 const Image = require("../models/file");
 
-// Use memory storage for multer
+// Using memory storage for multer
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
+// Upload single file
 router.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../views/upload.html"));
 });
@@ -32,6 +32,7 @@ router.post("/", upload.single("file"), (req, res) => {
     });
 });
 
+// Upload multiple files
 router.get("/multiple", (req, res) => {
   res.sendFile(path.join(__dirname, "../views/upload-multiple.html"));
 });
