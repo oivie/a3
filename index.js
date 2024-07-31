@@ -5,22 +5,23 @@ const app = express();
 const path = require("path");
 const upload_router = require("./router/upload_router");
 const fetch_router = require("./router/fetch_router")
+const mongoose = require("mongoose");
+mongoose.connect(process.env.MONGOURI);
+  let db = mongoose.connection;
+  db.once("open", () => {
+    console.log("Connected to MongoDB");
+  });
+  db.on("error", (err) => {
+    console.error("DB Error:" + err);
+  });
 
+  
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 app.use("/upload", upload_router);
 app.use("/fetch", fetch_router);
-
-app.get("/fetch-random", (req, res) => {
-  res.sendFile(path.join(__dirname, "/views/fetch-random.html"));
-});
-app.get("/fetch-multiple-random", (req, res) => {
-  res.sendFile(path.join(__dirname, "/views/fetch-multiple-random.html"));
-});
-
-
 
 // Serve index.html
 app.get("/", (req, res) => {
@@ -36,7 +37,18 @@ app.get("/gallery-pagination", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "gallery-pagination.html"));
 });
 
-// Handle 404
+
+
+app.get("/fetch-random", (req, res) => {
+  res.sendFile(path.join(__dirname, "/views/fetch-random.html"));
+});
+app.get("/fetch-multiple-random", (req, res) => {
+  res.sendFile(path.join(__dirname, "/views/fetch-multiple-random.html"));
+});
+
+
+
+  // Handle 404
 app.use((req, res) => {
   res.status(404).send("Route does not exist on our server");
 });

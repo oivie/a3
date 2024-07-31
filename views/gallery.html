@@ -1,28 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Gallery</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Gallery</title>
 </head>
+
 <body>
-    <h1>Gallery</h1>
-    <div id="gallery"></div>
+    <h1>Fetch Gallery</h1>
+    <button onclick="fetchRandomFiles()">Fetch Gallery</button>
+    <div id="imageContainer"></div> <!-- Added this line -->
     <script>
-        fetch('/fetch/all')
-            .then(response => response.json())
-            .then(files => {
-                const galleryDiv = document.getElementById('gallery');
-                for (const [fileName, fileContent] of Object.entries(files)) {
-                    const img = document.createElement('img');
-                    img.src = `data:image/jpeg;base64,${fileContent}`; // Change MIME type if necessary
-                    img.alt = fileName;
-                    img.style.width = "200px"; // Adjust size as needed
-                    img.style.margin = "10px";
-                    galleryDiv.appendChild(img);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching files:', error);
-            });
+        function fetchRandomFiles() {
+            fetch(`/fetch/all`)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    const imageContainer = document.getElementById('imageContainer');
+                    imageContainer.innerHTML = ''; // Clear any existing content
+                    if (Array.isArray(data) && data.length > 0) {
+                        data.forEach((image) => {
+                            if (image.imageBuffer) {
+                                // Create an img element
+                                const imgElement = document.createElement('img');
+                                imgElement.src = `data:${image.contentType};base64,${image.imageBuffer}`;
+                                imgElement.alt = image.filename;
+                                imgElement.style.maxWidth = '200px';
+                                imgElement.style.margin = '10px';
+
+                                // Append the img element to the container
+                                imageContainer.appendChild(imgElement);
+                            }
+                        });
+                    } else {
+                        imageContainer.innerHTML = '<p>No images found.</p>';
+                    }
+                })
+                .catch((error) => console.error("Error fetching files:", error));
+        }
     </script>
 </body>
+
 </html>
