@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const path = require("path"); // Importing the path module
 const multerConfig = require("../middleware/multerConfig");
 const Image = require("../models/file");
 

@@ -1,4 +1,5 @@
 const multer = require("multer");
+const path = require("path");
 const getFormattedDateTime = require("../util/dateTimeUtil");
 
 // Use memory storage
