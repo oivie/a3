@@ -6,7 +6,7 @@ const path = require("path");
 const upload_router = require("./router/upload_router");
 const fetch_router = require("./router/fetch_router")
 const mongoose = require("mongoose");
-mongoose.connect(process.env.MONGOURI);
+mongoose.connect(process.env.MONGODB_URI);
   let db = mongoose.connection;
   db.once("open", () => {
     console.log("Connected to MongoDB");
