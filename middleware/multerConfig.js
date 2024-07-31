@@ -2,7 +2,7 @@ const multer = require("multer");
 const path = require("path");
 const getFormattedDateTime = require("../util/dateTimeUtil");
 
-const storage = multer.diskStorage({
+const storage = multer.memoryStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, "../uploads"));
   },
