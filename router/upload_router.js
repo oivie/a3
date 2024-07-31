@@ -14,6 +14,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", upload.single("file"), (req, res) => {
+  console.log("Request received for single file upload.");
   if (!req.file) {
     console.error("No file uploaded.");
     return res.status(400).send("No file uploaded.");
@@ -39,6 +40,7 @@ router.get("/multiple", (req, res) => {
 });
 
 router.post("/multiple", upload.array("files", 100), (req, res) => {
+  console.log("Request received for multiple files upload.");
   if (!req.files || req.files.length === 0) {
     console.error("No files uploaded.");
     return res.status(400).send("No files uploaded.");
