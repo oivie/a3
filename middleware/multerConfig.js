@@ -1,16 +1,16 @@
 const multer = require("multer");
-const path = require("path");
 const getFormattedDateTime = require("../util/dateTimeUtil");
 
-const storage = multer.memoryStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../uploads"));
-  },
-  filename: function (req, file, cb) {
-    cb(null, `${getFormattedDateTime()}-${file.originalname}`);
-  },
-});
+// Use memory storage
+const storage = multer.memoryStorage();
 
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    // Accept only specific file types if needed
+    cb(null, true);
+  },
+  limits: { fileSize: 1024 * 1024 * 10 } // 10MB file size limit
+});
 
 module.exports = upload;
